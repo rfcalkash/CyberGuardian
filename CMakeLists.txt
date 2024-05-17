@@ -4,7 +4,7 @@ project(CyberGuardian VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Quick3D)
 
 qt_standard_project_setup()
 
@@ -18,6 +18,17 @@ qt_add_qml_module(appCyberGuardian
     QML_FILES
         Main.qml
         RESOURCES images/skybox/desert.png images/skybox/grass.png images/skybox/water.png
+        RESOURCES images/skybox/desert.jpg
+        RESOURCES shaders/floor_material.frag
+        SOURCES skytexture.h skytexture.cpp
+        SOURCES QMLData.h
+        SOURCES macros.h
+        RESOURCES shaders/ground_material.frag
+        RESOURCES shaders/ground_material.vert
+        RESOURCES images/testHM.jpg
+        RESOURCES images/earth.png
+        SOURCES noise/qnoise.h noise/qnoise.cpp
+        SOURCES noiseprovider.h noiseprovider.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -33,6 +44,7 @@ set_target_properties(appCyberGuardian PROPERTIES
 
 target_link_libraries(appCyberGuardian
     PRIVATE Qt6::Quick
+    PRIVATE Qt6::Quick3D
 )
 
 include(GNUInstallDirs)
