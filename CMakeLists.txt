@@ -29,6 +29,7 @@ qt_add_qml_module(appCyberGuardian
         RESOURCES images/earth.png
         SOURCES noise/qnoise.h noise/qnoise.cpp
         SOURCES noiseprovider.h noiseprovider.cpp
+        SOURCES terraingeometry.h terraingeometry.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

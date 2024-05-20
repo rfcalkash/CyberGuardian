@@ -13,17 +13,17 @@ Window {
     id: mainWindow
     property int terrainType:terrainTypeCB.currentValue
 
-    Connections{
-        target: terrain
-        function onMapsChanged(){
-            terrainLoader.active=false
-            terrainLoader.active=true
-        }
-    }
+    // Connections{
+    //     target: terrain
+    //     function onMapsChanged(){
+    //         terrainLoader.active=false
+    //         terrainLoader.active=true
+    //     }
+    // }
 
-    Component.onCompleted: {
-        terrain.generatePixmaps();
-    }
+    // Component.onCompleted: {
+    //     terrain.generatePixmaps();
+    // }
 
     View3D{
         id: sceneId
@@ -55,6 +55,7 @@ Window {
             shadowMapQuality: Light.ShadowMapQualityVeryHigh
         }
         Model{
+            visible: false
             id: sphereId
             source: "#Sphere"
             position: Qt.vector3d(10,100,10)
@@ -64,18 +65,29 @@ Window {
                 }
             ]
         }
-        Loader{
-            id: terrainLoader
-            sourceComponent: Model {
-                scale: Qt.vector3d(100, 100, 100)
-                geometry: HeightFieldGeometry {
-                    id: terrainGeometry
-                    source: "images/earth.png"
-                    extents: Qt.vector3d(400,10,400)
-                }
-                materials: [ DefaultMaterial { } ]
-            }
+        // Loader{
+        //     id: terrainLoader
+        //     sourceComponent: Model {
+        //         scale: Qt.vector3d(100, 100, 100)
+        //         geometry: HeightFieldGeometry {
+        //             id: terrainGeometry
+        //             source: "images/earth.png"
+        //             extents: Qt.vector3d(400,10,400)
+        //         }
+        //         materials: [ DefaultMaterial { } ]
+        //     }
+        // }
+        Model{
+            geometry: TerrainGeometry{}
+            materials: [ PrincipledMaterial {
+                    metalness: 0.0
+                    roughness: 1.0
+                    baseColor: StaticQmlHelper.fromTerrainType(mainWindow.terrainType)
+                    // lighting: PrincipledMaterial.NoLighting
+                } ]
+            // scale: Qt.vector3d(100,100,100)
         }
+
 
     }
     WasdController{
