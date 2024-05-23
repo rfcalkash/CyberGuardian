@@ -72,6 +72,43 @@ void TerrainGeometry::fillIndexes()
     setIndexData(i);
 }
 
+void TerrainGeometry::fillVertexesSimple(QVector<QVector<float>> data)
+{
+    QByteArray v;
+    v.resize((2 * requestedRect().width() * requestedRect().height() + requestedRect().height() + requestedRect().width() + 1) * sizeof(float) * 3);
+    QDataStream s(&v, QIODeviceBase::WriteOnly);
+    float* p = reinterpret_cast<float*>(v.data());
+    for (int x = 0; x < requestedRect().width(); ++x) {
+        for (int y = 0; y < requestedRect().height(); ++y) {
+            *p++ = x;
+            *p++ = data[x][y];
+            *p++ = y;
+        }
+    }
+    setVertexData(v);
+}
+
+void TerrainGeometry::fillIndexesSimple()
+{
+    QByteArray i;
+    const auto width = requestedRect().width();
+    i.resize(width * requestedRect().height() * 2 * 3 * sizeof(qint32));
+    qint32* iP = reinterpret_cast<qint32*>(i.data());
+    for (int x = 0; x < requestedRect().width() - 1; ++x) {
+        for (int y = 0; y < requestedRect().height() - 1; ++y) {
+
+            *iP++ = x + (y + 1) * (width);
+            *iP++ = x + y * (width);
+            *iP++ = x + 1 + y * (width);
+
+            *iP++ = x + 1 + y * (width);
+            *iP++ = x + 1 + (y + 1) * (width);
+            *iP++ = x + (y + 1) * (width);
+        }
+    }
+    setIndexData(i);
+}
+
 void TerrainGeometry::rebuild()
 {
     clear();
@@ -99,7 +136,7 @@ void TerrainGeometry::rebuild()
     addAttribute(QQuick3DGeometry::Attribute::PositionSemantic, 0, QQuick3DGeometry::Attribute::F32Type);
     addAttribute(QQuick3DGeometry::Attribute::IndexSemantic, 0, QQuick3DGeometry::Attribute::U32Type);
     setPrimitiveType(QQuick3DGeometry::PrimitiveType::Triangles);
-    fillVertexes(data);
-    fillIndexes();
+    fillVertexesSimple(data);
+    fillIndexesSimple();
     emit terrainUpdated();
 }

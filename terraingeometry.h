@@ -62,6 +62,8 @@ signals:
 private:
     void fillVertexes(QVector<QVector<float>> data);
     void fillIndexes();
+    void fillVertexesSimple(QVector<QVector<float>> data);
+    void fillIndexesSimple();
     void pushVertex(float* buf, float x, float y, float z, const QColor& color);
 };
 

@@ -68,7 +68,7 @@ Window {
 
         Repeater3D{
             id: terrainData
-            property var chunksAmount: Qt.size(8,8)
+            property var chunksAmount: Qt.size(10,10)
             property var chunkSize: Qt.size(100,100)
             property double exp: mountainsSlider.value
             property int seed: seedId.value
