@@ -37,7 +37,7 @@ Window {
         }
         environment: SceneEnvironment {
             backgroundMode: SceneEnvironment.Color
-            clearColor: "#8ae5ff"/*StaticQmlHelper.fromTerrainType(mainWindow.terrainType)*/
+            clearColor: StaticQmlHelper.fromTerrainType(mainWindow.terrainType)
             antialiasingMode: SceneEnvironment.ProgressiveAA
 
             antialiasingQuality: SceneEnvironment.VeryHigh
@@ -55,7 +55,7 @@ Window {
             shadowMapQuality: Light.ShadowMapQualityVeryHigh
         }
         Model{
-            visible: false
+            visible: true
             id: sphereId
             source: "#Sphere"
             position: Qt.vector3d(10,100,10)
@@ -66,36 +66,36 @@ Window {
             ]
         }
 
-        Repeater3D{
-            id: terrainData
-            property var chunksAmount: Qt.size(10,10)
-            property var chunkSize: Qt.size(100,100)
-            property double exp: mountainsSlider.value
-            property int seed: seedId.value
-            model: StaticQmlHelper.rebuildChunksModel(chunksAmount,chunkSize)
-            delegate: Model{
-                pickable: true
-                geometry: TerrainGeometry{
-                    chunksSize: terrainData.chunksAmount
-                    requestedRect: modelData.rect
-                    exp: terrainData.exp
-                    seed: terrainData.seed
-                    onTerrainUpdated: {
-                        update()
-                        cameraId.rotate(1,Qt.vector3d(0,1,0),Node.SceneSpace)
-                        cameraId.rotate(-1,Qt.vector3d(0,1,0),Node.SceneSpace)
-                    }
-                }
-                position: modelData.position
-                materials: [ PrincipledMaterial {
-                        metalness: 0.0
-                        roughness: 1.0
-                        baseColor: StaticQmlHelper.fromTerrainType(mainWindow.terrainType)
-                        // lighting: PrincipledMaterial.NoLighting
-                    } ]
-                // scale: Qt.vector3d(100,100,100)
-            }
-        }
+        // Repeater3D{
+        //     id: terrainData
+        //     property var chunksAmount: Qt.size(10,10)
+        //     property var chunkSize: Qt.size(100,100)
+        //     property double exp: mountainsSlider.value
+        //     property int seed: seedId.value
+        //     model: StaticQmlHelper.rebuildChunksModel(chunksAmount,chunkSize)
+        //     delegate: Model{
+        //         pickable: true
+        //         geometry: TerrainGeometry{
+        //             chunksSize: terrainData.chunksAmount
+        //             requestedRect: modelData.rect
+        //             exp: terrainData.exp
+        //             seed: terrainData.seed
+        //             onTerrainUpdated: {
+        //                 update()
+        //                 cameraId.rotate(1,Qt.vector3d(0,1,0),Node.SceneSpace)
+        //                 cameraId.rotate(-1,Qt.vector3d(0,1,0),Node.SceneSpace)
+        //             }
+        //         }
+        //         position: modelData.position
+        //         materials: [ PrincipledMaterial {
+        //                 metalness: 0.0
+        //                 roughness: 1.0
+        //                 baseColor: StaticQmlHelper.fromTerrainType(mainWindow.terrainType)
+        //                 // lighting: PrincipledMaterial.NoLighting
+        //             } ]
+        //         // scale: Qt.vector3d(100,100,100)
+        //     }
+        // }
 
     }
     WasdController{
@@ -139,17 +139,21 @@ Window {
             id: autorotateCB
             text: "Autorotate sun"
         }
-        Slider{
-            id:mountainsSlider
-            from:1
-            to:20
-            value: 3
-        }
-        SpinBox{
-            id: seedId
-            from: 0
-            to: 100000
-            value: 0
+        // Slider{
+        //     id:mountainsSlider
+        //     from:1
+        //     to:20
+        //     value: 3
+        // }
+        // SpinBox{
+        //     id: seedId
+        //     from: 0
+        //     to: 100000
+        //     value: 0
+        // }
+        Button{
+            text: "Show sphere"
+            onClicked: cameraId.lookAt(sphereId)
         }
     }
 
